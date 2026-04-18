@@ -1,13 +1,14 @@
 import { useScrollReveal } from './useScrollReveal'
+import myFinanceImg from '../assets/my-finance.png'
 
 const projects = [
   {
     id: 1,
-    title: 'Project One',
-    tech: ['React', 'Node.js', 'MongoDB'],
-    description: 'A brief description of what this project does, the technologies used, and the problem it solves. Edit this in Projects.jsx.',
-    image: null,
-    link: '#',
+    title: 'Premium Finance',
+    tech: ['React', 'Flask', 'SQLite', 'Chart.js', 'Tailwind'],
+    description: 'A full-stack personal finance dashboard featuring income and expense tracking, interactive charts, date filters, and a premium dark UI with amber accents — built with React, Flask REST API, and Chart.js.',
+    image: myFinanceImg,
+    link: 'https://my-finance-jg.netlify.app/',
   },
   {
     id: 2,
