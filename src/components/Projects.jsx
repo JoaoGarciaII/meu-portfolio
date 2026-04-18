@@ -1,5 +1,5 @@
 import { useScrollReveal } from './useScrollReveal'
-import myFinanceImg from '../assets/my-finance.png'
+import myFinanceImg from '../assets/my-finance-jg.png'
 
 const projects = [
   {
