@@ -1,4 +1,5 @@
 import { useScrollReveal } from './useScrollReveal'
+import profilePhoto from '../assets/profile.jpeg'
 
 export default function About() {
   const { ref, visible } = useScrollReveal()
@@ -99,22 +100,18 @@ export default function About() {
             background:'radial-gradient(circle at bottom left, rgba(221,153,0,0.1), transparent 70%)' }} />
 
           {/* Photo placeholder — replace with <img src={yourPhoto} ... /> */}
-          <div style={{
-            width: 90, height: 90, borderRadius: '50%',
-            border: '2px dashed rgba(221,153,0,0.35)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(221,153,0,0.5)" strokeWidth="1.5">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.65rem', color: 'var(--muted)', letterSpacing: '0.15em' }}>
-            YOUR PHOTO HERE
-          </span>
-          <span style={{ fontSize: '0.65rem', color: 'rgba(221,153,0,0.4)', fontFamily: "'JetBrains Mono', monospace" }}>
-            assets/images/profile.jpg
-          </span>
+          <img
+             src={profilePhoto}
+              alt="João Pedro Garcia"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+                borderRadius: 12,
+                display: 'block',
+                }}
+              />
         </div>
       </div>
     </section>
