@@ -60,7 +60,7 @@ export default function About() {
             color: 'var(--muted)', lineHeight: 1.85, fontSize: '0.97rem',
             borderLeft: '2px solid rgba(221,153,0,0.3)', paddingLeft: '1.2rem',
           }}>
-            My name is <span style={{ color: 'var(--gold)', fontWeight: 600 }}>João Pedro Garcia</span> — a passionate and dedicated Full Stack developer, currently studying Information Security and Analysis <span style={{ color: 'var(--text)', fontWeight: 500 }}>FMU</span>. Beyond my degree,
+            My name is <span style={{ color: 'var(--gold)', fontWeight: 600 }}>João Pedro Garcia</span> — a passionate and dedicated Full Stack developer, currently studying Information Security and Analysis at <span style={{ color: 'var(--text)', fontWeight: 500 }}>FMU</span>. Beyond my degree,
             I have completed several specialization courses in Front-End development and am always looking to expand my skills. I believe that great software arises from the intersection of clean code, security awareness, and an unyielding curiosity to keep learning. Whether building robust back-ends or creating refined front-ends, I am always committed to delivering increasingly better solutions.
           </p>
 
