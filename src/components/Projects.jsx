@@ -1,45 +1,71 @@
 import { useScrollReveal } from './useScrollReveal'
+import { useRef, useEffect } from 'react'
 import myFinanceImg from '../assets/my-finance-jg.png'
+import immersiveImg   from '../assets/immersive-devs.png'
+import sneakerImg     from '../assets/online-products.png'
+import steticImg      from '../assets/modern-stetic.png'
+import petshopImg     from '../assets/petshop-platform.png'
 
 const projects = [
   {
     id: 1,
     title: 'Premium Finance',
     tech: ['React', 'Flask', 'SQLite', 'Chart.js', 'Tailwind'],
-    description: 'A full-stack personal finance dashboard featuring income and expense tracking, interactive charts, date filters, and a premium dark UI with amber accents — built with React, Flask REST API, and Chart.js.',
+    description:
+      'A full-stack personal finance dashboard featuring income and expense tracking, interactive charts, date filters, and a premium dark UI with amber accents — built with React, Flask REST API, and Chart.js.',
     image: myFinanceImg,
     link: 'https://my-finance-jg.netlify.app/',
   },
   {
     id: 2,
-    title: 'Project Two',
-    tech: ['Python', 'MySQL', 'Vue'],
-    description: 'A brief description of what this project does, the technologies used, and the problem it solves. Edit this in Projects.jsx.',
-    image: null,
-    link: '#',
+    title: "Immersive Dev's",
+    tech: ['React', 'Vite', 'Tailwind', 'JavaScript'],
+    description:
+      'An interactive neural brain map of the dev universe — over 35 technologies visualized as animated nodes. Click any language to explore descriptions, connections, and technical details, with matrix effects and glowing bezier pulses.',
+    image: immersiveImg,
+    link: 'https://immersive-devs.netlify.app/',
   },
   {
     id: 3,
-    title: 'Project Three',
-    tech: ['JavaScript', 'Tailwind', 'Vite'],
-    description: 'A brief description of what this project does, the technologies used, and the problem it solves. Edit this in Projects.jsx.',
-    image: null,
-    link: '#',
+    title: 'Modern System Stetic',
+    tech: ['React', 'Tailwind', 'Vite'],
+    description:
+      'A sleek presentation website for an aesthetic clinic, showcasing services, team, and booking call-to-action. Designed with a modern, elegant visual identity to convert visitors into clients.',
+    image: steticImg,
+    link: 'https://apresentacao-clinica-estetic.netlify.app/',
+  },
+  {
+    id: 4,
+    title: 'On-line Products Preview',
+    tech: ['React', 'Tailwind', 'Vite'],
+    description:
+      'A modern e-commerce presentation page for a sneaker outlet store, featuring product display, WhatsApp conversion flow, and a fully responsive layout built to drive sales for small businesses.',
+    image: sneakerImg,
+    link: 'https://apresentacao-urban-kick-outlet.netlify.app/',
+  },
+  {
+    id: 5,
+    title: "PetShop's Platform",
+    tech: ['React', 'Tailwind', 'Vite'],
+    description:
+      'A warm and professional presentation platform for a pet shop, highlighting services like grooming, veterinary care, and products — designed to build trust and attract pet owners online.',
+    image: petshopImg,
+    link: 'https://apresentacao-pata-feliz-care.netlify.app/',
   },
 ]
 
-function ProjectCard({ title, tech, description, image, link, delay, visible }) {
+function ProjectCard({ title, tech, description, image, link }) {
   return (
     <div
-      className={`glow-border ${visible ? 'animate-fade-up' : 'opacity-0'}`}
+      className="glow-border"
       style={{
-        animationDelay: `${delay}s`,
         background: 'var(--surface)',
         borderRadius: 18,
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        flex: '1 1 280px',
+        width: 'var(--card-w, 280px)',
+        flexShrink: 0,
         transition: 'transform 0.3s ease',
         position: 'relative',
       }}
@@ -48,7 +74,7 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
     >
       {/* Image area */}
       <div style={{
-        width: '100%', height: 180,
+        width: '100%', height: 160,
         background: image ? 'none' : 'linear-gradient(135deg, var(--surface2) 0%, var(--bg3) 100%)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative', overflow: 'hidden',
@@ -57,7 +83,6 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
           <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <>
-            {/* Decorative placeholder */}
             <div style={{
               position: 'absolute', inset: 0,
               background: 'radial-gradient(ellipse at center, rgba(221,153,0,0.08) 0%, transparent 70%)',
@@ -75,7 +100,6 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
             </div>
           </>
         )}
-        {/* Top badge */}
         <div style={{
           position: 'absolute', top: 12, right: 12,
           background: 'rgba(8,10,15,0.8)', backdropFilter: 'blur(10px)',
@@ -89,10 +113,9 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
       </div>
 
       {/* Content */}
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1 }}>
-        <h3 style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--text)' }}>{title}</h3>
+      <div style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.65rem', flex: 1 }}>
+        <h3 style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text)' }}>{title}</h3>
 
-        {/* Tech tags */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
           {tech.map(t => (
             <span key={t} style={{
@@ -106,7 +129,7 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
           ))}
         </div>
 
-        <p style={{ color: 'var(--muted)', fontSize: '0.87rem', lineHeight: 1.7, flex: 1 }}>
+        <p style={{ color: 'var(--muted)', fontSize: '0.82rem', lineHeight: 1.7, flex: 1 }}>
           {description}
         </p>
 
@@ -116,14 +139,14 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
           rel="noopener noreferrer"
           style={{
             alignSelf: 'flex-start',
-            padding: '0.55rem 1.4rem',
+            padding: '0.5rem 1.2rem',
             background: 'transparent',
             border: '1px solid rgba(221,153,0,0.4)',
             color: 'var(--gold)',
             borderRadius: 8,
             fontFamily: "'Syne', sans-serif",
             fontWeight: 600,
-            fontSize: '0.8rem',
+            fontSize: '0.78rem',
             letterSpacing: '0.08em',
             textDecoration: 'none',
             transition: 'all 0.25s ease',
@@ -142,7 +165,7 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
         >
           View More
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </a>
       </div>
@@ -150,8 +173,50 @@ function ProjectCard({ title, tech, description, image, link, delay, visible }) 
   )
 }
 
+// Calcula largura do card e quantos mostrar baseado na tela
+function getCardConfig() {
+  const w = window.innerWidth
+  if (w >= 960)  return { cardW: 280, visible: 3, gap: 24 }
+  if (w >= 600)  return { cardW: 260, visible: 2, gap: 20 }
+  return             { cardW: 260, visible: 1, gap: 16 }
+}
+
 export default function Projects() {
   const { ref, visible } = useScrollReveal()
+  const trackRef   = useRef(null)
+  const animRef    = useRef(null)
+  const pausedRef  = useRef(false)
+  const configRef  = useRef(getCardConfig())
+
+  useEffect(() => {
+    // Atualiza config em resize
+    const onResize = () => { configRef.current = getCardConfig() }
+    window.addEventListener('resize', onResize)
+
+    const track = trackRef.current
+    if (!track) return
+
+    let pos = 0
+
+    const step = () => {
+      if (!pausedRef.current) {
+        const { cardW, gap } = configRef.current
+        const CARD_STEP = cardW + gap
+        pos += 0.5
+        if (pos >= CARD_STEP * projects.length) pos = 0
+        track.style.transform = `translateX(-${pos}px)`
+      }
+      animRef.current = requestAnimationFrame(step)
+    }
+
+    animRef.current = requestAnimationFrame(step)
+    return () => {
+      cancelAnimationFrame(animRef.current)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [])
+
+  const allProjects = [...projects, ...projects, ...projects]
 
   return (
     <section
@@ -175,15 +240,51 @@ export default function Projects() {
         A selection of things I've built
       </p>
 
-      <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-        {projects.map((project, i) => (
-          <ProjectCard
-            key={project.id}
-            {...project}
-            visible={visible}
-            delay={0.2 + i * 0.12}
-          />
-        ))}
+      {/* Janela responsiva */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 888,   /* desktop: 3 cards */
+          margin: '0 auto',
+          overflow: 'hidden',
+          position: 'relative',
+          borderRadius: 18,
+        }}
+        onMouseEnter={() => { pausedRef.current = true }}
+        onMouseLeave={() => { pausedRef.current = false }}
+        onTouchStart={() => { pausedRef.current = true }}
+        onTouchEnd={() => { setTimeout(() => { pausedRef.current = false }, 1500) }}
+      >
+        {/* Fades laterais */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: 48, zIndex: 2,
+          background: 'linear-gradient(to right, var(--bg, #080a0f) 10%, transparent)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: 48, zIndex: 2,
+          background: 'linear-gradient(to left, var(--bg, #080a0f) 10%, transparent)',
+          pointerEvents: 'none',
+        }} />
+
+        {/* Track */}
+        <div
+          ref={trackRef}
+          style={{
+            display: 'flex',
+            gap: '1.5rem',
+            width: 'max-content',
+            willChange: 'transform',
+            paddingBottom: '0.5rem',
+          }}
+        >
+          {allProjects.map((project, i) => (
+            <ProjectCard
+              key={`${project.id}-${i}`}
+              {...project}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
