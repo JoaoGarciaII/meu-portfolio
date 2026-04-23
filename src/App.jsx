@@ -1,11 +1,12 @@
 import Particles from './components/Particles'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import About from './components/About'
-import Skills from './components/Skills'
-import Projects from './components/Projects'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
+import Header    from './components/Header'
+import Hero      from './components/Hero'
+import About     from './components/About'
+import Skills    from './components/Skills'
+import Projects  from './components/Projects'
+import Contact   from './components/Contact'
+import Footer    from './components/Footer'
+import Cursor    from './components/Cursor'
 
 function Divider() {
   return <div className="gold-divider" style={{ margin: '0 2.5rem' }} />
@@ -15,23 +16,34 @@ export default function App() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: `
-        radial-gradient(ellipse 80% 60% at 10% 15%, rgba(221,153,0,0.06) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 50% at 90% 85%, rgba(221,153,0,0.04) 0%, transparent 55%),
-        linear-gradient(135deg, #080A0F 0%, #0D1017 50%, #080A0F 100%)
-      `,
-      backgroundAttachment: 'fixed',
+      background: '#000',
       position: 'relative',
     }}>
-      {/* Grid texture overlay */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: `
-          linear-gradient(rgba(221,153,0,0.025) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(221,153,0,0.025) 1px, transparent 1px)
-        `,
-        backgroundSize: '70px 70px',
-      }} />
+      {/* Grain overlay */}
+      <div className="grain" aria-hidden />
+
+      {/* Ambient orbs */}
+      <div aria-hidden style={{ pointerEvents: 'none' }}>
+        <div style={{
+          position: 'fixed', top: '8%', left: '12%', zIndex: 0,
+          width: 600, height: 600, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.018) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+          animation: 'orb 20s ease-in-out infinite',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'fixed', top: '55%', right: '8%', zIndex: 0,
+          width: 500, height: 500, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.014) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+          animation: 'orb 26s ease-in-out infinite reverse',
+          pointerEvents: 'none',
+        }} />
+      </div>
+
+      {/* Custom cursor */}
+      <Cursor />
 
       <Particles />
 

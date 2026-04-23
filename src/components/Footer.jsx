@@ -11,32 +11,37 @@ export default function Footer() {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Top glow line */}
+      {/* Top shimmer line */}
       <div style={{
         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
         width: '40%', height: 1,
-        background: 'linear-gradient(90deg, transparent, var(--gold), transparent)',
-        opacity: 0.3,
+        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+      }} />
+
+      {/* Ambient glow */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,255,255,0.02), transparent)',
       }} />
 
       {/* Logo mark */}
       <div style={{
         fontFamily: "'JetBrains Mono', monospace",
-        fontSize: '0.7rem', letterSpacing: '0.3em',
-        color: 'var(--gold)', textTransform: 'uppercase',
+        fontSize: '0.68rem', letterSpacing: '0.3em',
+        color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase',
         marginBottom: '0.4rem',
-        opacity: 0.7,
       }}>
         ✦ JG Dev ✦
       </div>
 
-      <p style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>
+      <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem' }}>
         &copy; {year} Developed by{' '}
-        <span style={{ color: 'var(--gold)', fontWeight: 600 }}>Joao Garcia</span>
+        <span style={{ color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>Joao Garcia</span>
       </p>
+
       <p style={{
         fontFamily: "'JetBrains Mono', monospace",
-        fontSize: '0.7rem', color: 'rgba(107,122,148,0.6)',
+        fontSize: '0.68rem', color: 'rgba(255,255,255,0.1)',
         letterSpacing: '0.05em',
       }}>
         joaohogarcia@hotmail.com

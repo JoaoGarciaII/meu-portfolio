@@ -1,189 +1,152 @@
+import { useState } from 'react'
 import { useScrollReveal } from './useScrollReveal'
 
-/* ─── SVG Icons ─── */
-const Icons = {
-  HTML: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#E44D26">
-      <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/>
-    </svg>
-  ),
-  CSS: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#1572B6">
-      <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.003-.23 2.716h-6.64l.24 2.573h6.182l-.364 3.522-2.61.706-2.646-.705-.173-1.96h-2.599l.333 4.032 5.19 1.4 5.2-1.4.99-11.2z"/>
-    </svg>
-  ),
-  JavaScript: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#F7DF1E">
-      <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179v-.056z"/>
-    </svg>
-  ),
-  Python: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28">
-      <path fill="#3776AB" d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.963 3.403 5.963h2.031v-2.869s-.109-3.402 3.35-3.402h5.769s3.24.052 3.24-3.13V3.13S18.28 0 11.914 0zm-3.21 1.814a1.045 1.045 0 1 1 0 2.09 1.045 1.045 0 0 1 0-2.09z"/>
-      <path fill="#FFD43B" d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826H20.1S24 18.211 24 12.031c0-6.18-3.403-5.963-3.403-5.963h-2.031v2.869s.109 3.402-3.35 3.402h-5.769s-3.24-.052-3.24 3.13V20.87S5.72 24 12.086 24zm3.21-1.814a1.045 1.045 0 1 1 0-2.09 1.045 1.045 0 0 1 0 2.09z"/>
-    </svg>
-  ),
-  Node: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#339933">
-      <path d="M11.998.0C5.373.0.0 5.373.0 11.998c0 6.628 5.374 12.002 11.998 12.002 6.628.0 12.002-5.374 12.002-12.002C24 5.372 18.626.0 11.998.0zm-.516 20.59c-.427.127-.876.02-1.215-.26l-4.39-4.036a.976.976 0 0 1 0-1.38l4.39-4.035a1.074 1.074 0 0 1 1.516.054c.401.427.383 1.1-.042 1.503l-3.237 2.977 3.237 2.977c.425.404.443 1.076.042 1.503a1.078 1.078 0 0 1-.301.697zm4.755-.26a1.074 1.074 0 0 1-1.516-.054c-.401-.427-.383-1.1.042-1.503l3.237-2.977-3.237-2.977c-.425-.404-.443-1.076-.042-1.503a1.074 1.074 0 0 1 1.516-.054l4.39 4.035a.976.976 0 0 1 0 1.38l-4.39 4.036z"/>
-    </svg>
-  ),
-  React: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#61DAFB">
-      <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.38.498 1.447.6 2.33 1.treasurer 2.33 1.678 0 .443-.793 1.01-2.1 1.553-.347.144-.72.277-1.109.397-.09-.432-.194-.87-.32-1.304-.37.84-.756 1.657-1.16 2.445.369.783.75 1.596 1.115 2.42.414-.125.802-.264 1.16-.413 1.333-.546 2.124-1.118 2.124-1.559 0-.474-.907-1.072-2.416-1.677-.44-.18-.9-.347-1.383-.498zm-13.743-.002c-.48.15-.94.317-1.378.496-1.33.545-2.12 1.118-2.12 1.555 0 .475.908 1.074 2.415 1.678.44.18.9.347 1.383.498.09-.43.195-.87.32-1.303.37-.84.758-1.657 1.16-2.444-.37-.784-.75-1.598-1.116-2.422zm4.68 1.717c.26.394.514.8.752 1.222.235.41.456.83.663 1.25-.235.41-.447.824-.672 1.226-.256.41-.51.822-.77 1.218-.31-.004-.616-.014-.92-.028-.303-.014-.604-.04-.9-.068-.455-.52-.895-1.075-1.315-1.66-.42-.59-.818-1.19-1.19-1.794.373-.602.773-1.2 1.192-1.79.42-.585.86-1.14 1.316-1.66.297-.028.598-.054.902-.068.302-.015.608-.024.918-.028zm5.944.278c.463.018.912.04 1.345.082.466.524.914 1.08 1.34 1.667.428.593.827 1.19 1.195 1.793-.372.604-.773 1.204-1.193 1.793-.428.59-.876 1.147-1.34 1.67-.43.044-.877.065-1.346.083-.003-.026-.003-.052-.003-.078-.467-.018-.917-.04-1.346-.082l-.003.078c-.468.018-.917.04-1.35.082-.463-.52-.91-1.076-1.337-1.665-.43-.594-.83-1.194-1.2-1.798.374-.604.774-1.203 1.2-1.797.426-.588.873-1.144 1.336-1.664.434-.04.882-.064 1.35-.082l.003.079c.468-.018.916-.04 1.35-.082zm1.77 4.42c-.207.393-.42.785-.643 1.174-.23.398-.476.785-.72 1.165-.44-.015-.883-.04-1.327-.064-.444-.02-.888-.048-1.326-.082-.243-.378-.49-.764-.728-1.16-.238-.4-.47-.804-.698-1.215.23-.41.463-.816.704-1.215.238-.4.485-.785.726-1.163.44.034.882.062 1.326.082.443.025.887.048 1.326.065.244.377.49.763.72 1.16zm-9.06 2.22c.167.635.392 1.28.653 1.93-.636-.147-1.248-.315-1.832-.505l.003-.005c.41-.438.798-.894 1.175-1.42zm10.77 0c.38.526.767.984 1.178 1.42l.003.005c-.584.19-1.197.358-1.833.505.26-.648.486-1.295.653-1.93zm-5.385 3.23c.455-.47.91-.992 1.362-1.567-.445.02-.9.032-1.362.032-.46 0-.916-.01-1.36-.032.45.575.906 1.098 1.36 1.566zm-4.705-1.9c-.245-.42-.487-.847-.72-1.28-.23-.435-.45-.87-.655-1.305-.207.44-.427.878-.652 1.312-.226.434-.455.857-.69 1.27.646.152 1.304.285 1.97.395-.087-.13-.172-.26-.253-.392zm9.41 0c-.08.133-.166.262-.252.393.667-.11 1.325-.243 1.97-.395-.234-.414-.465-.837-.69-1.27-.224-.435-.443-.872-.652-1.312-.204.434-.425.87-.653 1.305-.232.433-.475.86-.72 1.28z"/>
-    </svg>
-  ),
-  Vue: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#4FC08D">
-      <path d="M24,1.61H14.06L12,5.16,9.94,1.61H0L12,22.39ZM12,14.08,5.16,2.23H9.59L12,6.41l2.41-4.18h4.43Z"/>
-    </svg>
-  ),
-  Tailwind: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#06B6D4">
-      <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/>
-    </svg>
-  ),
-  MySQL: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#4479A1">
-      <path d="M16.405 5.501c-.115 0-.193.014-.274.033v.013h.014c.054.104.146.19.238.274l.014.014.014-.014c.006-.113.014-.217.014-.326 0-.003-.003-.006-.006-.013a.236.236 0 0 0-.014.019zm-1.078-.089c-.013.002-.026.005-.04.008a.307.307 0 0 0-.012.026c.08.008.156.008.234.013l.06.006.003-.013-.234-.04zm1.53.072c-.024.008-.04.021-.048.049.022.006.047.01.07.016l.006-.013-.027-.052zm-2.39-.046c-.066-.003-.13.008-.198.017l-.007.014.2.032.007-.008-.002-.055zm4.245-.272c-.04.03-.08.06-.118.092l-.001.014.166.019.001-.014-.048-.111zm-5.085.073c-.01.013-.02.027-.03.04a.244.244 0 0 0 .03.007l.001-.002-.001-.045zm5.84-.187a.273.273 0 0 0-.043.002.2.2 0 0 0-.048.013l-.014.014.08.052.014-.014.01-.067zm-6.52.095c-.015.02-.031.039-.047.059l.006.006h.019l.003-.007-.004-.058zm6.92-.127c-.044.018-.084.04-.12.066l.006.013.079.013.006-.013-.028-.066a.22.22 0 0 0-.042-.013zm-7.443.106c-.021.022-.04.045-.059.07l.006.007h.007l.014-.008.032-.069zm7.77-.038c-.036.01-.073.022-.108.036l.013.014.053.013.013-.014-.014-.049a.22.22 0 0 0-.053-.014a.07.07 0 0 0-.018.005l.005-.005a.33.33 0 0 0-.001.001a.33.33 0 0 0-.001.001zm-8.006.046c-.026.025-.052.05-.077.076l.013.013.053-.014.014-.013-.003-.062zm8.292-.001c-.029.007-.059.016-.086.028l.006.013.046.013.013-.013-.013-.04a.18.18 0 0 0-.06-.015l.006-.006a.17.17 0 0 0-.006.006zm-8.542.067c-.028.026-.056.053-.083.08l.007.006.053-.014.013-.013-.013-.059zm8.76.017c-.023.005-.047.013-.068.022l.007.014.046.013.013-.014-.013-.035a.143.143 0 0 0-.068-.014l.007-.007a.16.16 0 0 0-.007.007zm-8.956.078c-.027.027-.055.055-.081.083l.006.006.053-.006.013-.013-.014-.07zm9.15.026c-.018.004-.036.01-.053.016l.006.013.04.013.013-.013-.013-.03a.128.128 0 0 0-.053-.013l.007-.006a.12.12 0 0 0-.007.006zm.196.07a.11.11 0 0 0-.04.012l.006.013.035.013.013-.013-.013-.026a.11.11 0 0 0-.04-.012l.006-.006a.11.11 0 0 0-.006.006zm-9.52.016c-.025.026-.05.053-.075.08l.006.006.046-.006.014-.014-.014-.066zm9.7.056a.1.1 0 0 0-.033.01l.006.013.03.013.013-.013-.013-.023a.1.1 0 0 0-.033-.01l.007-.007a.09.09 0 0 0-.007.007zm-9.866.028c-.023.024-.046.049-.068.073l.006.006.04-.006.013-.013-.013-.06zm10.044.063a.09.09 0 0 0-.026.008l.006.013.026.013.013-.013-.013-.021a.09.09 0 0 0-.026-.008l.006-.006a.08.08 0 0 0-.006.006zM0 7.508v8.985h24V7.508H0zm16.032 6.783c-.292 0-.585-.02-.876-.058l-.788.447-.01-.01-.006-.013c-.236-.014-.471-.04-.703-.075l-.748.424-.006-.013c-.21-.029-.42-.065-.626-.107l-.7.397-.007-.013c-.18-.045-.358-.096-.534-.15l-.638.362-.007-.013a6.75 6.75 0 0 1-.454-.194l-.562.319-.007-.013a6.39 6.39 0 0 1-.373-.237l-.475.27-.007-.014a6.12 6.12 0 0 1-.29-.275l-.382.217-.007-.014a5.9 5.9 0 0 1-.21-.306l-.286.162-.014-.013a5.72 5.72 0 0 1-.138-.33l-.193.11-.014-.014a5.61 5.61 0 0 1-.078-.348l-.104.059-.013-.014a5.39 5.39 0 0 1-.027-.354v-.046c0-.115.006-.23.02-.343l-.006-.013c.012-.115.031-.228.058-.34l-.006-.013c.027-.11.062-.218.104-.325l-.006-.013c.044-.107.097-.21.158-.31l-.006-.013c.062-.097.132-.19.21-.277l-.007-.013c.08-.087.168-.168.264-.242l-.013-.013a3.875 3.875 0 0 1 .316-.206l-.013-.013c.11-.063.226-.12.346-.17l-.013-.014c.12-.05.244-.093.37-.13l-.007-.013c.126-.036.256-.065.387-.086l-.013-.014a4.53 4.53 0 0 1 .4-.04c.031-.002.062-.003.093-.003.13 0 .26.007.388.02l-.006-.013c.13.014.258.035.384.063l-.006-.013c.125.028.248.063.368.105l-.007-.013c.12.043.237.093.35.149l-.013-.013c.11.057.218.12.32.19l-.013-.013a3.3 3.3 0 0 1 .286.225l-.013-.013c.09.08.174.167.25.26l-.013-.013c.076.092.145.19.206.292l-.013-.013c.06.102.111.208.154.317l-.013-.013c.042.11.075.222.098.337l-.006-.013c.023.115.035.232.035.35v.02a2.68 2.68 0 0 1-.032.365l-.006-.006c-.022.12-.054.237-.094.352l.006.006a2.7 2.7 0 0 1-.153.327l.006.006c-.063.103-.136.2-.218.289l.007.006c-.082.089-.174.17-.274.242l.013.006c-.101.072-.21.135-.326.188l.013.007a2.86 2.86 0 0 1-.37.134l.013.006c-.125.038-.254.067-.386.089l.013.007a3.8 3.8 0 0 1-.398.04c-.027.001-.054.002-.081.002zm3.96-1.342c.042-.135.064-.276.064-.417v-.04a1.963 1.963 0 0 0-.064-.454c-.04-.152-.1-.3-.178-.44a1.97 1.97 0 0 0-.281-.373 1.97 1.97 0 0 0-.366-.285 2.01 2.01 0 0 0-.438-.18 2.1 2.1 0 0 0-.468-.063h-.082a2.1 2.1 0 0 0-.47.053 2.01 2.01 0 0 0-.443.168 1.99 1.99 0 0 0-.374.274 1.97 1.97 0 0 0-.292.368c-.078.135-.139.279-.182.428a1.88 1.88 0 0 0-.065.46v.065a1.97 1.97 0 0 0 .065.467c.042.15.102.296.181.433.08.136.177.261.291.372.113.111.241.207.38.284.138.077.286.136.44.178a2.01 2.01 0 0 0 .468.063h.08c.158-.003.316-.025.468-.064a2.01 2.01 0 0 0 .443-.174c.136-.08.26-.178.37-.29.11-.113.205-.24.28-.378z"/>
-    </svg>
-  ),
-  MongoDB: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#47A248">
-      <path d="M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0 1 11.91 24h.481c.114-1.032.284-2.056.51-3.07.417-.296.604-.463.85-.693a11.342 11.342 0 0 0 3.639-8.464c.01-.814-.103-1.662-.197-2.218zm-5.336 8.195s0-8.291.275-8.29c.213 0 .49 10.695.49 10.695-.381-.045-.765-1.76-.765-2.405z"/>
-    </svg>
-  ),
-  PostgreSQL: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#336791">
-      <path d="M23.5384 11.3308c-.184-.8502-.5738-1.5466-1.1587-2.072-.0664-.0604-.1364-.1172-.2076-.1716.0485-.3657.0741-.7423.0741-1.1282 0-4.2716-3.7313-7.7451-8.3077-7.7451-1.6359 0-3.1681.4418-4.4472 1.2067C8.9474 1.1064 8.3969 1 7.8462 1 3.5195 1 0 4.2716 0 8.3077c0 .3782.0275.7523.0803 1.1186-.068.0526-.1348.1074-.1992.1657C-.6923 10.0736-1.092 11.77.9038 13.3c.2073.1586.4346.3.6774.4224.2428.1226.5.2265.7659.3109.5316.168 1.1108.2673 1.7275.2932.6267.0264 1.2931-.0216 1.9923-.1489.704-.1278 1.4319-.3447 2.1731-.6544.5718-.2423 1.1298-.5414 1.6669-.9007.2844.1637.5755.3121.8726.4453.2979.1335.5999.2506.9053.3515.3057.1007.613.1845.9218.2509.3085.0662.6175.1143.9263.144.3085.0296.6165.0437.9233.0437.3066 0 .614-.0141.9218-.0437.3082-.0297.6162-.0778.9247-.144.3086-.0664.6158-.1502.9218-.2509.306-.1009.6078-.218.9055-.3515.5748-.2578 1.131-.5642 1.6614-.9187.1714.1062.3468.2068.5267.3016.1799.0946.3637.181.5516.2594.3762.1567.7634.279 1.1571.3663.3943.0873.7943.1378 1.1952.1498.4014.0119.8025-.0168 1.2017-.0867.3994-.0698.7927-.182 1.1755-.3365.3827-.1543.7525-.3504 1.1028-.5875.0854-.057.169-.1167.2508-.1791.0818-.0622.1619-.1271.2393-.195.0771-.0674.1522-.1374.2236-.2101.0715-.0724.1399-.1474.2038-.2249.0641-.0779.1241-.158.179-.2404.0548-.0825.1057-.1672.1512-.254.0453-.0866.0857-.1756.1209-.2664.0351-.0907.0651-.1833.0891-.2776.0237-.0941.042-.19.0538-.2876.012-.0975.018-.1966.018-.2977 0-.1015-.006-.2009-.0178-.2988zm-1.3487 1.3044c-.0278.0923-.0617.1828-.1019.2706-.0403.0877-.0867.1724-.1386.2534-.0521.081-.1098.1583-.1727.2313-.0626.073-.1309.142-.2039.2066-.073.0645-.1511.1243-.2334.1789-.0822.0546-.1685.104-.2581.1475-.0896.0435-.1821.0809-.2769.1121-.0944.031-.1909.0558-.2887.0743-.0976.0183-.1964.0302-.2961.0356-.0997.0055-.1999.0046-.2991-.0027-.0995-.0074-.1982-.021-.2966-.0408-.0984-.0196-.1957-.0453-.2919-.0773-.0963-.0318-.1915-.0698-.2854-.1138-.0941-.0438-.185-.0938-.2731-.1498-.0882-.0558-.1733-.1175-.2544-.1846-.0813-.067-.1583-.1395-.2306-.2173-.0725-.0778-.1404-.16-.2033-.2467-.063-.0867-.1212-.1775-.1744-.2723l.5413-.3214c.0455.0813.0953.1596.1493.2344.054.0749.1124.1462.175.2134.0627.0673.1298.13.2008.1877.0712.0578.1461.1102.225.1571.0786.0467.161.0878.247.1228.0858.0348.1748.064.2665.0874.0916.0232.1857.04.2817.0499.096.0098.1932.0131.2906.0101.0975-.003.1947-.0128.2913-.0294.0966-.0166.192-.041.2866-.0729.0944-.032.1872-.0716.2777-.1186.0903-.047.1779-.1007.2621-.161.0841-.0603.1649-.1271.2417-.2001.0767-.073.1492-.1524.2165-.2377.0673-.0851.1294-.1761.1855-.2719.0563-.0958.1063-.1963.1498-.2997.0434-.1033.0802-.2099.1099-.3185.0296-.1086.0519-.2196.0667-.332.0148-.1122.022-.2261.022-.3405 0-.1162-.0074-.2312-.0224-.3449z"/>
-    </svg>
-  ),
-  Vite: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28">
-      <path fill="#646CFF" d="M23.462 5.712 12.388.163a.896.896 0 0 0-.776 0L.538 5.712a.848.848 0 0 0-.467.745v11.087c0 .304.17.583.44.734l11.074 6.16c.26.145.577.145.837 0l11.074-6.16a.848.848 0 0 0 .44-.734V6.457a.848.848 0 0 0-.474-.745z"/>
-      <path fill="#FFFFFF" d="m12.003 2.17 8.927 4.97v9.72l-8.927 4.97V2.17z" opacity=".6"/>
-      <path fill="#FFFFFF" d="M12.003 2.17v19.66L3.076 16.86V7.14z"/>
-    </svg>
-  ),
-  Git: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#F05032">
-      <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.608-.406-.545-.545-.676-1.342-.396-2.009L7.636 3.66 .45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187"/>
-    </svg>
-  ),
-  GitHub: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="#E8EAF0">
-      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-    </svg>
-  ),
-  AI: () => (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--gold)">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-      <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z" fill="none" stroke="var(--gold)" strokeWidth="1.5"/>
-    </svg>
-  ),
-}
+const CATEGORIES = ['Todos', 'Frontend', 'Backend', 'Mobile', 'Database', 'DevOps', 'Tooling', 'Data']
 
-const skillGroups = [
-  {
-    title: 'Languages',
-    color: '#E44D26',
-    skills: [
-      { name: 'HTML', icon: 'HTML', level: 3 },
-      { name: 'CSS', icon: 'CSS', level: 3 },
-      { name: 'JavaScript', icon: 'JavaScript', level: 3 },
-      { name: 'Python', icon: 'Python', level: 3 },
-    ],
-  },
-  {
-    title: 'Frameworks',
-    color: '#61DAFB',
-    skills: [
-      { name: 'Node.js', icon: 'Node', level: 2 },
-      { name: 'React', icon: 'React', level: 2 },
-      { name: 'Vue', icon: 'Vue', level: 2 },
-    ],
-  },
-  {
-    title: 'Styling',
-    color: '#06B6D4',
-    skills: [
-      { name: 'Tailwind CSS', icon: 'Tailwind', level: 3 },
-    ],
-  },
-  {
-    title: 'Databases',
-    color: '#47A248',
-    skills: [
-      { name: 'MySQL', icon: 'MySQL', level: 2 },
-      { name: 'MongoDB', icon: 'MongoDB', level: 2 },
-      { name: 'PostgreSQL', icon: 'PostgreSQL', level: 2 },
-    ],
-  },
-  {
-    title: 'Tools',
-    color: '#F05032',
-    skills: [
-      { name: 'Vite', icon: 'Vite', level: 3 },
-      { name: 'Git', icon: 'Git', level: 3 },
-      { name: 'GitHub', icon: 'GitHub', level: 3 },
-      { name: 'AI Tools', icon: 'AI', level: 3 },
-    ],
-  },
+const skills = [
+  { name: 'HTML', level: 89, icon: '🧱', color: '#E34F26', category: 'Frontend', description: 'Estruturação semântica de páginas web com HTML5. Domínio de acessibilidade, formulários, SEO on-page e integração com frameworks modernos.', related: ['CSS', 'JavaScript', 'React'] },
+  { name: 'CSS', level: 78, icon: '🎨', color: '#1572B6', category: 'Frontend', description: 'Estilização avançada com CSS3: Flexbox, Grid, animações, variáveis, pseudo-elementos e design responsivo mobile-first.', related: ['HTML', 'Tailwind', 'SASS'] },
+  { name: 'JavaScript', level: 66, icon: '⚡', color: '#F7DF1E', category: 'Frontend', description: 'Linguagem base da web. ES6+, assincronismo (async/await), manipulação do DOM, fetch API e integração com backends REST.', related: ['React', 'Node.js', 'Vue'] },
+  { name: 'React', level: 72, icon: '⚛️', color: '#61DAFB', category: 'Frontend', description: 'Biblioteca para construção de SPAs. Uso de hooks, context API, roteamento com React Router e deploy via Netlify.', related: ['JavaScript', 'Vite', 'React Native'] },
+  { name: 'Vue', level: 76, icon: '💚', color: '#42B883', category: 'Frontend', description: 'Framework progressivo para interfaces reativas. Composition API, Vue Router, reatividade declarativa e ecossistema Vite.', related: ['JavaScript', 'Vite', 'Tailwind'] },
+  { name: 'Tailwind', level: 75, icon: '🌊', color: '#38BDF8', category: 'Frontend', description: 'Framework CSS utility-first para estilização rápida e consistente. Uso com Vite, React e Vue para design systems.', related: ['CSS', 'React', 'Vue'] },
+  { name: 'SASS', level: 35, icon: '💅', color: '#CC6699', category: 'Frontend', description: 'Pré-processador CSS com variáveis, mixins, aninhamento e funções. Organização de estilos em projetos de média e grande escala.', related: ['CSS', 'Tailwind'] },
+  { name: 'Python', level: 54, icon: '🐍', color: '#3776AB', category: 'Backend', description: 'Linguagem versátil para backends, automação e scripts. Uso com Flask para APIs REST e deploy no Render.', related: ['Node.js', 'Docker', 'MySQL'] },
+  { name: 'Node.js', level: 67, icon: '🟢', color: '#68A063', category: 'Backend', description: 'Runtime JavaScript server-side para APIs e serviços. Express.js, autenticação JWT e integração com bancos SQL e NoSQL.', related: ['JavaScript', 'MongoDB', 'PostgreSQL'] },
+  { name: 'Go', level: 23, icon: '🐹', color: '#00ADD8', category: 'Backend', description: 'Linguagem compilada de alta performance para microsserviços e CLIs. Exploração inicial de concorrência com goroutines.', related: ['Docker', 'Linux', 'AWS'] },
+  { name: 'React Native', level: 43, icon: '📱', color: '#61DAFB', category: 'Mobile', description: 'Desenvolvimento mobile cross-platform com Expo. Navegação, câmera, notificações push e geração de APK via EAS Build.', related: ['React', 'JavaScript', 'Flutter'] },
+  { name: 'Flutter', level: 56, icon: '🦋', color: '#54C5F8', category: 'Mobile', description: 'Framework Dart da Google para apps mobile, web e desktop a partir de um único código. Widgets customizados e animações fluidas.', related: ['React Native'] },
+  { name: 'MySQL', level: 74, icon: '🐬', color: '#4479A1', category: 'Database', description: 'Banco relacional amplamente usado. Modelagem de tabelas, joins, índices, procedures e integração com Python e Node.', related: ['PostgreSQL', 'Node.js', 'Python'] },
+  { name: 'PostgreSQL', level: 55, icon: '🐘', color: '#336791', category: 'Database', description: 'Banco relacional robusto com suporte a JSON, full-text search e extensões avançadas. Uso em APIs Node e Python.', related: ['MySQL', 'Node.js', 'Docker'] },
+  { name: 'MongoDB', level: 67, icon: '🍃', color: '#4DB33D', category: 'Database', description: 'Banco NoSQL orientado a documentos. Modelagem flexível com coleções, agregações e integração via Mongoose.', related: ['Node.js', 'PostgreSQL'] },
+  { name: 'Git', level: 89, icon: '🔀', color: '#F05032', category: 'DevOps', description: 'Controle de versão com domínio de branches, merges, rebase e resolução de conflitos em projetos colaborativos.', related: ['GitHub', 'Docker'] },
+  { name: 'GitHub', level: 92, icon: '🐙', color: '#ffffff', category: 'DevOps', description: 'Plataforma central de versionamento e CI/CD. Deploy automático via GitHub Actions, Pages, Netlify e Render.', related: ['Git', 'Vite', 'Docker'] },
+  { name: 'Docker', level: 48, icon: '🐳', color: '#2496ED', category: 'DevOps', description: 'Conteinerização de aplicações para ambientes reproduzíveis. Dockerfiles, docker-compose e deploy em VPS e AWS.', related: ['Linux', 'AWS', 'Node.js'] },
+  { name: 'Linux', level: 90, icon: '🐧', color: '#FCC624', category: 'DevOps', description: 'Administração de sistemas Linux para servidor e desenvolvimento. Bash scripting, SSH, permissões e gerenciamento de pacotes.', related: ['Docker', 'AWS', 'GitHub'] },
+  { name: 'Windows', level: 90, icon: '🪟', color: '#0078D4', category: 'DevOps', description: 'Ambiente de desenvolvimento completo no Windows com WSL2, PowerShell, configuração de ambientes e troubleshooting avançado.', related: ['Linux', 'Git'] },
+  { name: 'AWS', level: 35, icon: '☁️', color: '#FF9900', category: 'DevOps', description: 'Exploração de serviços cloud: EC2, S3, Lambda e configuração de ambientes de deploy escaláveis.', related: ['Docker', 'Linux', 'Node.js'] },
+  { name: 'Vite', level: 56, icon: '⚡', color: '#646CFF', category: 'Tooling', description: 'Build tool ultrarrápido para projetos front-end modernos. Configuração de React, Vue e TypeScript com HMR instantâneo.', related: ['React', 'Vue', 'JavaScript'] },
+  { name: 'Power BI', level: 34, icon: '📊', color: '#F2C811', category: 'Data', description: 'Criação de dashboards e relatórios interativos a partir de fontes SQL e Excel. Uso em projetos de consultoria empresarial.', related: ['MySQL', 'PostgreSQL'] },
 ]
 
-function SkillCard({ name, icon, level, visible, delay }) {
-  const IconComponent = Icons[icon]
-
+function Popup({ skill, onClose }) {
+  if (!skill) return null
   return (
-    <div
-      className={`glow-border ${visible ? `animate-fade-up` : 'opacity-0'}`}
-      style={{
-        animationDelay: `${delay}s`,
-        background: 'var(--surface)',
-        borderRadius: 14,
-        padding: '1.4rem 1.1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '0.7rem',
-        minWidth: 110,
-        flex: '1 1 110px',
-        cursor: 'default',
-        transition: 'transform 0.25s ease',
-      }}
-      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)' }}
-      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)' }}
-    >
-      {/* Icon */}
-      <div style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {IconComponent ? <IconComponent /> : (
-          <span style={{ fontSize: '1.4rem' }}>⚡</span>
-        )}
-      </div>
+    <>
+      <div onClick={onClose} style={{
+        position: 'fixed', inset: 0, zIndex: 999,
+        background: 'rgba(0,0,0,0.4)',
+        backdropFilter: 'blur(4px)',
+        animation: 'fadeIn 0.2s ease',
+      }} />
+      <div style={{
+        position: 'fixed', left: '50%', top: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 1000,
+        width: 'min(380px, 90vw)',
+        background: 'rgba(12,14,22,0.92)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: 20, padding: '2rem',
+        boxShadow: `0 0 0 1px rgba(255,255,255,0.04), 0 32px 64px rgba(0,0,0,0.7), 0 0 80px ${skill.color}15`,
+        backdropFilter: 'blur(28px) saturate(180%)',
+        animation: 'popupIn 0.28s cubic-bezier(0.34,1.56,0.64,1)',
+        overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg, transparent, ${skill.color}66, transparent)` }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, width: 140, height: 140, background: `radial-gradient(circle at top left, ${skill.color}18, transparent 70%)`, pointerEvents: 'none' }} />
 
-      {/* Name */}
-      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)', textAlign: 'center', letterSpacing: '0.03em' }}>
-        {name}
-      </span>
+        <button onClick={onClose} style={{
+          position: 'absolute', top: '1rem', right: '1rem',
+          width: 28, height: 28, borderRadius: 8,
+          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+          color: 'rgba(255,255,255,0.35)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '0.85rem', transition: 'all 0.2s',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#fff' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,255,255,0.35)' }}
+        >✕</button>
 
-      {/* Dot level */}
-      <div style={{ display: 'flex', gap: 5 }}>
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: i < level ? 'var(--gold)' : 'var(--surface2)',
-            boxShadow: i < level ? '0 0 6px rgba(221,153,0,0.6)' : 'none',
-            border: i < level ? '1px solid rgba(221,153,0,0.3)' : '1px solid rgba(255,255,255,0.07)',
-            transition: 'all 0.3s ease',
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem', marginBottom: '1.4rem' }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+            background: `${skill.color}12`, border: `1px solid ${skill.color}30`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.6rem',
+            filter: `drop-shadow(0 0 8px ${skill.color}66)`,
+          }}>
+            {skill.icon}
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <h3 style={{ color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>{skill.name}</h3>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: '0.55rem',
+                letterSpacing: '0.12em', color: skill.color,
+                background: `${skill.color}15`, border: `1px solid ${skill.color}30`,
+                borderRadius: 99, padding: '0.15rem 0.5rem', textTransform: 'uppercase',
+              }}>{skill.category}</span>
+            </div>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.15em' }}>
+              PROFICIENCY — {skill.level}%
+            </p>
+          </div>
+        </div>
+
+        <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.06)', marginBottom: '1.4rem', overflow: 'hidden' }}>
+          <div style={{
+            height: '100%', borderRadius: 99, width: `${skill.level}%`,
+            background: `linear-gradient(90deg, ${skill.color}77, ${skill.color})`,
+            boxShadow: `0 0 10px ${skill.color}66`,
+            animation: 'barGrow 0.7s 0.15s cubic-bezier(0.4,0,0.2,1) both',
           }} />
-        ))}
+        </div>
+
+        <p style={{
+          color: 'rgba(255,255,255,0.48)', fontSize: '0.88rem', lineHeight: 1.8,
+          borderLeft: `2px solid ${skill.color}33`, paddingLeft: '1rem', marginBottom: '1.4rem',
+        }}>
+          {skill.description}
+        </p>
+
+        <div>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.58rem', letterSpacing: '0.22em', color: 'rgba(255,255,255,0.18)', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+            Conecta com
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+            {skill.related.map(r => (
+              <span key={r} style={{
+                fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem',
+                color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 99, padding: '0.22rem 0.65rem', background: 'rgba(255,255,255,0.04)',
+              }}>{r}</span>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+
+      <style>{`
+        @keyframes popupIn {
+          from { opacity: 0; transform: translate(-50%, -46%) scale(0.93); }
+          to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; } to { opacity: 1; }
+        }
+        @keyframes barGrow {
+          from { width: 0%; opacity: 0; }
+        }
+      `}</style>
+    </>
   )
 }
 
 export default function Skills() {
   const { ref, visible } = useScrollReveal()
+  const [selected, setSelected] = useState(null)
+  const [filter, setFilter] = useState('Todos')
+
+  const filtered = filter === 'Todos' ? skills : skills.filter(s => s.category === filter)
 
   return (
     <section
@@ -192,45 +155,127 @@ export default function Skills() {
       style={{ padding: '6rem 2.5rem', maxWidth: 1100, margin: '0 auto' }}
     >
       <p className={`section-label ${visible ? 'animate-fade-up' : 'opacity-0'}`} style={{ marginBottom: '0.6rem' }}>
-        02 — Technical Skills
+        02 — Skills
       </p>
       <h2
-        className={`gold-text ${visible ? 'animate-fade-up delay-100' : 'opacity-0'}`}
-        style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '3rem' }}
+        className={visible ? 'animate-fade-up delay-100' : 'opacity-0'}
+        style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 800, marginBottom: '0.5rem', color: '#fff', textShadow: '0 0 60px rgba(255,255,255,0.08)' }}
       >
-        What I Work With
+        Tech Stack
       </h2>
+      <p className={visible ? 'animate-fade-up delay-150' : 'opacity-0'}
+        style={{ color: 'rgba(255,255,255,0.25)', marginBottom: '2rem', fontSize: '0.88rem' }}>
+        Clique em qualquer skill para saber mais
+      </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-        {skillGroups.map((group, gi) => (
-          <div key={group.title}>
-            <h3
-              className={visible ? 'animate-fade-up' : 'opacity-0'}
-              style={{
-                animationDelay: `${0.1 + gi * 0.05}s`,
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '0.72rem', letterSpacing: '0.2em',
-                color: group.color, textTransform: 'uppercase',
-                marginBottom: '1rem',
-                display: 'flex', alignItems: 'center', gap: '0.5rem',
-              }}
-            >
-              <span style={{ width: 18, height: 1, background: group.color, display: 'inline-block', opacity: 0.6 }} />
-              {group.title}
-            </h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.9rem' }}>
-              {group.skills.map((skill, si) => (
-                <SkillCard
-                  key={skill.name}
-                  {...skill}
-                  visible={visible}
-                  delay={0.15 + gi * 0.1 + si * 0.06}
-                />
-              ))}
+      {/* Category filter */}
+      <div className={visible ? 'animate-fade-up delay-200' : 'opacity-0'}
+        style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', marginBottom: '2.5rem' }}>
+        {CATEGORIES.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setFilter(cat)}
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '0.6rem', letterSpacing: '0.14em',
+              padding: '0.35rem 0.9rem', borderRadius: 99, cursor: 'pointer',
+              border: `1px solid ${filter === cat ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.08)'}`,
+              background: filter === cat ? 'rgba(255,255,255,0.09)' : 'transparent',
+              color: filter === cat ? '#fff' : 'rgba(255,255,255,0.28)',
+              transition: 'all 0.2s ease', textTransform: 'uppercase',
+            }}
+            onMouseEnter={e => { if (filter !== cat) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)' } }}
+            onMouseLeave={e => { if (filter !== cat) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.28)' } }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Grid de ícones */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+        {filtered.map((skill, i) => (
+          <div
+            key={skill.name}
+            onClick={() => setSelected(skill)}
+            className={visible ? 'animate-fade-up' : 'opacity-0'}
+            style={{
+              animationDelay: `${0.2 + (i % 8) * 0.04}s`,
+              cursor: 'pointer',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              gap: '0.5rem',
+              padding: '1rem 0.75rem',
+              borderRadius: 16,
+              width: 88,
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.07)',
+              transition: 'all 0.25s ease',
+              position: 'relative', overflow: 'hidden',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = `${skill.color}12`
+              e.currentTarget.style.borderColor = `${skill.color}44`
+              e.currentTarget.style.transform = 'translateY(-4px)'
+              e.currentTarget.style.boxShadow = `0 8px 32px ${skill.color}22, 0 0 0 1px ${skill.color}22`
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)'
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            {/* Glow atrás do ícone */}
+            <div style={{
+              position: 'absolute', top: 18, left: '50%',
+              transform: 'translateX(-50%)',
+              width: 36, height: 36, borderRadius: '50%',
+              background: `${skill.color}22`,
+              filter: 'blur(10px)', pointerEvents: 'none',
+            }} />
+
+            {/* Ícone */}
+            <span style={{
+              fontSize: '1.6rem',
+              filter: `drop-shadow(0 0 6px ${skill.color}88)`,
+              position: 'relative', zIndex: 1,
+            }}>
+              {skill.icon}
+            </span>
+
+            {/* Nome */}
+            <p style={{
+              color: 'rgba(255,255,255,0.7)', fontSize: '0.68rem',
+              fontWeight: 600, textAlign: 'center',
+              lineHeight: 1.2, letterSpacing: '0.02em',
+            }}>
+              {skill.name}
+            </p>
+
+            {/* Barra */}
+            <div style={{ width: '100%', height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.06)', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', borderRadius: 99,
+                width: visible ? `${skill.level}%` : '0%',
+                background: `linear-gradient(90deg, ${skill.color}66, ${skill.color})`,
+                boxShadow: `0 0 6px ${skill.color}55`,
+                transition: `width 0.9s ${0.3 + i * 0.03}s cubic-bezier(0.4,0,0.2,1)`,
+              }} />
             </div>
+
+            {/* % */}
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '0.55rem', color: skill.color,
+              letterSpacing: '0.08em', opacity: 0.8,
+            }}>
+              {skill.level}%
+            </span>
           </div>
         ))}
       </div>
+
+      <Popup skill={selected} onClose={() => setSelected(null)} />
     </section>
   )
 }
